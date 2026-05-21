@@ -10,52 +10,89 @@ Seja prestativo e tente resolver as dúvidas do usuário da melhor forma possív
 Quando não souber algo específico da empresa, sugira que o usuário entre em contato com o suporte humano.`;
 
 export default async function handler(req, res) {
-    // Permite apenas POST
-    if (req.method !== "POST") {
-        return res.status(405).json({ error: "Método não permitido" });
+
+    // ─── CORS ─────────────────────────────────────────────
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+    // Responde requisição preflight do navegador
+    if (req.method === "OPTIONS") {
+        return res.status(200).end();
     }
 
-    // CORS — permite qualquer origem (ajuste para o seu domínio em produção)
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    // Permite apenas POST
+    if (req.method !== "POST") {
+        return res.status(405).json({
+            error: "Método não permitido"
+        });
+    }
 
     const { messages } = req.body;
 
+    // Validação
     if (!messages || !Array.isArray(messages)) {
-        return res.status(400).json({ error: "Campo 'messages' inválido ou ausente" });
+        return res.status(400).json({
+            error: "Campo 'messages' inválido ou ausente"
+        });
     }
 
     try {
+
+        // ─── Chamada para a API da Groq ───────────────────
         const groqRes = await fetch(GROQ_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // A chave fica aqui no servidor — nunca vai pro navegador do usuário
+
+                // A chave fica SOMENTE no backend
                 "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
             },
+
             body: JSON.stringify({
                 model: GROQ_MODEL,
+
                 messages: [
-                    { role: "system", content: SYSTEM_PROMPT },
+                    {
+                        role: "system",
+                        content: SYSTEM_PROMPT
+                    },
+
                     ...messages,
                 ],
+
                 max_tokens: 1024,
                 temperature: 0.7,
             }),
         });
 
+        // ─── Erro vindo da Groq ───────────────────────────
         if (!groqRes.ok) {
+
             const err = await groqRes.json().catch(() => ({}));
-            return res.status(groqRes.status).json({ error: err?.error?.message || "Erro na Groq API" });
+
+            return res.status(groqRes.status).json({
+                error: err?.error?.message || "Erro na Groq API"
+            });
         }
 
+        // ─── Resposta da IA ───────────────────────────────
         const data = await groqRes.json();
-        const reply = data.choices[0].message.content.trim();
 
-        return res.status(200).json({ reply });
+        const reply =
+            data?.choices?.[0]?.message?.content?.trim() ||
+            "Sem resposta da IA.";
+
+        return res.status(200).json({
+            reply
+        });
 
     } catch (err) {
+
         console.error("Erro interno:", err);
-        return res.status(500).json({ error: "Erro interno do servidor" });
+
+        return res.status(500).json({
+            error: "Erro interno do servidor"
+        });
     }
 }
