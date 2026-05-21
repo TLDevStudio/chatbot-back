@@ -2,7 +2,7 @@
 // Esta função fica entre o frontend e o Groq, escondendo a chave de API.
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "llama3-8b-8192";
+const GROQ_MODEL = "llama-3.3-70b-versatile";
 
 const SYSTEM_PROMPT = `Você é o Assistente Virtual da AutoBot IA, um atendente simpático, 
 objetivo e profissional. Responda sempre em português brasileiro de forma clara e concisa. 
