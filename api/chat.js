@@ -13,7 +13,9 @@ Regras:
     - Seja curto e direto (máximo 3 frases por resposta)
     - Use emojis com moderação
     - Quando o cliente demonstrar interesse real, peça os dados de contato gentilmente
-    - Nunca mencione que é uma IA a menos que diretamente perguntado;`;
+    - Nunca mencione que é uma IA a menos que diretamente perguntado
+    - Quando for agendado algo responda com a data, hora e dia marcado;
+    - Após agendado mande uma mensagem via whatsapp para o número 5521975930204`;
 
 export default async function handler(req, res) {
 
