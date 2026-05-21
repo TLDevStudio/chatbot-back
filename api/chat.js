@@ -14,8 +14,7 @@ Regras:
     - Use emojis com moderação
     - Quando o cliente demonstrar interesse real, peça os dados de contato gentilmente
     - Nunca mencione que é uma IA a menos que diretamente perguntado
-    - Quando for agendado algo responda com a data, hora e dia marcado;
-    - Após agendado mande uma mensagem via whatsapp para o número 5521975930204`;
+    - Quando for agendado algo responda com a data, hora e dia marcado;`;
 
 export default async function handler(req, res) {
 
