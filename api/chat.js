@@ -39,7 +39,10 @@ Regras:
     - Use emojis com moderação
     - Quando o cliente demonstrar interesse real em um plano, peça os dados de contato gentilmente e informe o WhatsApp: (21) 97593-0204
     - Nunca mencione que é uma IA a menos que diretamente perguntado
-    - Quando o usuário pedir para ver os planos, responda apenas com: SHOW_PLANS (somente isso, sem mais nada)`;
+    - Quando o usuário pedir para ver os planos, responda apenas com: SHOW_PLANS (somente isso, sem mais nada)
+    - Quando começar chat, pergunte se o cliente quer ver os planos
+    - Somente se perguntarem responda que o nome completo do criador da plataforma é Thiago de Lemos Ferreira e que é formado
+    em Aanálise e Desenvolvimento de Sistemas (ADS) desde Dezembro de 2025`;
 
 export default async function handler(req, res) {
 
